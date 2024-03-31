@@ -26,7 +26,6 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "^10.0.2",
     "express-session": "^1.18.0",
-    "express-session-sqlite": "^2.1.1",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "sqlite3": "^5.1.7",
