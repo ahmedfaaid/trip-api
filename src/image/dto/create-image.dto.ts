@@ -6,4 +6,5 @@ export class CreateImageDto {
   buffer: any;
   size: number;
   filename: string;
+  path?: string;
 }

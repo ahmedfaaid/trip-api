@@ -13,12 +13,12 @@ export class ImageService {
   ) {}
 
   async create(createImageDto: CreateImageDto): Promise<Image> {
-    const { filename, mimetype } = createImageDto;
+    const { filename, mimetype, path } = createImageDto;
 
     const newImage = await this.imageRepository.save({
       filename,
       mimetype,
-      path: `/uploads/${filename}`
+      path
     });
 
     return newImage;
