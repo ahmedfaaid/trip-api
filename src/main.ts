@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import session from 'express-session';
+import * as session from 'express-session';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
