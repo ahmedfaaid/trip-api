@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Image } from 'src/image/entities/image.entity';
+import { AddressService } from 'src/address/address.service';
+import { ImageService } from 'src/image/image.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -11,12 +12,21 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    @InjectRepository(Image)
-    private imageRepository: Repository<Image>,
+    private imageService: ImageService,
+    private addressService: AddressService
   ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto, image: Express.Multer.File) {
+    const { address, ...rest } = JSON.parse(createUserDto as unknown as string);
+    const newImage = await this.imageService.create(image);
+    const newAddress = await this.addressService.create(address);
+    const newUser = this.userRepository.save({
+      ...rest,
+      profile_picture: newImage,
+      address: newAddress
+    });
+
+    return newUser;
   }
 
   async findAll(): Promise<User[]> {

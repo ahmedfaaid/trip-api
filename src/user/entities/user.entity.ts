@@ -5,12 +5,12 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn
 } from 'typeorm';
 
 export enum Gender {
   MALE = 'male',
-  FEMALE = 'female',
+  FEMALE = 'female'
 }
 
 @Entity()
@@ -33,9 +33,9 @@ export class User {
   @Column()
   password: string;
 
-  @OneToOne(() => Image)
+  @OneToOne(() => Image, { nullable: true })
   @JoinColumn({ name: 'profile_picture_id' })
-  profile_picture: Image;
+  profile_picture?: Image;
 
   @Column()
   date_of_birth: Date;

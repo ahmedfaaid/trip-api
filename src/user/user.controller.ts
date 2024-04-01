@@ -6,8 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFile,
+  UseInterceptors
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
@@ -16,8 +20,23 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @UseInterceptors(
+    FileInterceptor('profile_picture', {
+      storage: diskStorage({
+        destination: './uploads',
+        filename: (req, file, callback) => {
+          const ext = extname(file.originalname);
+          const filename = `${req.session.username}-${Date.now()}${ext}`;
+          callback(null, filename);
+        }
+      })
+    })
+  )
+  async create(
+    @Body() body: any,
+    @UploadedFile() profile_picture: Express.Multer.File
+  ) {
+    return await this.userService.create(body.body, profile_picture);
   }
 
   @Get()
