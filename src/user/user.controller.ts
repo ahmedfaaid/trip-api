@@ -34,7 +34,7 @@ export class UserController {
   )
   async create(
     @Body() body: any,
-    @UploadedFile() profile_picture: Express.Multer.File
+    @UploadedFile() profile_picture?: Express.Multer.File
   ) {
     return await this.userService.create(body.body, profile_picture);
   }
