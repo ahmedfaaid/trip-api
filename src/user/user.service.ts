@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as bcrypt from 'bcrypt';
 import { AddressService } from 'src/address/address.service';
 import { ImageService } from 'src/image/image.service';
 import { Repository } from 'typeorm';
@@ -17,11 +18,15 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto, image: Express.Multer.File) {
-    const { address, ...rest } = JSON.parse(createUserDto as unknown as string);
+    const { address, password, ...rest } = JSON.parse(
+      createUserDto as unknown as string
+    );
     const newImage = await this.imageService.create(image);
     const newAddress = await this.addressService.create(address);
+    const hashedPwd = await bcrypt.hash(password, process.env.SALT_ROUNDS);
     const newUser = this.userRepository.save({
       ...rest,
+      password: hashedPwd,
       profile_picture: newImage,
       address: newAddress
     });
