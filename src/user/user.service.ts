@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AddressService } from 'src/address/address.service';
 import { ImageService } from 'src/image/image.service';
@@ -35,6 +35,26 @@ export class UserService {
 
   findOne(id: number) {
     return `This action returns a #${id} user`;
+  }
+
+  async findByEmail(email: string): Promise<any> {
+    try {
+      const existingUser = await this.userRepository.findOne({
+        where: {
+          email
+        },
+        relations: {
+          profile_picture: true,
+          address: true
+        }
+      });
+
+      if (!existingUser) throw new NotFoundException();
+
+      return existingUser;
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

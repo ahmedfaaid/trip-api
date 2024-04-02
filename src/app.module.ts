@@ -6,6 +6,7 @@ import { DataSource } from 'typeorm';
 import { AddressModule } from './address/address.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
 import { ImageModule } from './image/image.module';
 import { UserModule } from './user/user.module';
 
@@ -22,7 +23,8 @@ import { UserModule } from './user/user.module';
     ConfigModule.forRoot(),
     AddressModule,
     UserModule,
-    ImageModule
+    ImageModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService]
