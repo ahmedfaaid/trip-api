@@ -17,13 +17,14 @@ export class UserService {
     private addressService: AddressService
   ) {}
 
-  async create(createUserDto: CreateUserDto, image: Express.Multer.File) {
-    const { address, password, ...rest } = JSON.parse(
-      createUserDto as unknown as string
-    );
+  async create(createUserDto: CreateUserDto, image?: Express.Multer.File) {
+    const { address, password, ...rest } = { ...createUserDto };
     const newImage = await this.imageService.create(image);
     const newAddress = await this.addressService.create(address);
-    const hashedPwd = await bcrypt.hash(password, process.env.SALT_ROUNDS);
+    const salt = await bcrypt.genSalt(
+      process.env.SALT_ROUNDS as unknown as number
+    );
+    const hashedPwd = await bcrypt.hash(password, salt);
     const newUser = this.userRepository.save({
       ...rest,
       password: hashedPwd,
@@ -62,7 +63,7 @@ export class UserService {
     }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: number, _updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
 
