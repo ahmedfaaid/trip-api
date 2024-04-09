@@ -21,9 +21,7 @@ export class UserService {
     const { address, password, ...rest } = { ...createUserDto };
     const newImage = await this.imageService.create(image);
     const newAddress = await this.addressService.create(address);
-    const salt = await bcrypt.genSalt(
-      process.env.SALT_ROUNDS as unknown as number
-    );
+    const salt = await bcrypt.genSalt(+process.env.SALT_ROUNDS);
     const hashedPwd = await bcrypt.hash(password, salt);
     const newUser = this.userRepository.save({
       ...rest,
