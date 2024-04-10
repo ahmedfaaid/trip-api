@@ -47,7 +47,6 @@ export class AuthService {
     req: Request,
     profile_picture?: Express.Multer.File
   ) {
-    console.log({ body });
     try {
       let newUser = await this.userService.create(body, profile_picture);
 
