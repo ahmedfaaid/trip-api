@@ -44,4 +44,9 @@ export class AuthController {
     const data = JSON.parse(body.data);
     return await this.authService.register(data, req, profile_picture);
   }
+
+  @Post('me')
+  async me(@Req() req: Request) {
+    return await this.authService.me(req);
+  }
 }

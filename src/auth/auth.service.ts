@@ -68,4 +68,33 @@ export class AuthService {
       throw new BadRequestException();
     }
   }
+
+  async me(req: Request) {
+    try {
+      const { session } = req;
+
+      if (!session.username || !session.token) {
+        throw new UnauthorizedException();
+      }
+
+      const { username, id } = await this.jwtService.verifyAsync(session.token);
+
+      if (session.username !== username) {
+        throw new UnauthorizedException();
+      }
+
+      let user = await this.userService.findOne(id);
+
+      if (!user) {
+        throw new UnauthorizedException();
+      }
+
+      user = omit(['password'], user);
+
+      return user;
+    } catch (error) {
+      console.log(error);
+      throw new UnauthorizedException();
+    }
+  }
 }
