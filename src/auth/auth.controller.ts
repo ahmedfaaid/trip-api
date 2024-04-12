@@ -3,11 +3,12 @@ import {
   Controller,
   Post,
   Req,
+  Res,
   UploadedFile,
   UseInterceptors
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { AuthService } from './auth.service';
@@ -48,5 +49,10 @@ export class AuthController {
   @Post('me')
   async me(@Req() req: Request) {
     return await this.authService.me(req);
+  }
+
+  @Post('logout')
+  async logout(@Req() req: Request, @Res() res: Response) {
+    return await this.authService.logout(req, res);
   }
 }

@@ -4,7 +4,8 @@ import {
   UnauthorizedException
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
+import * as bcrypt from 'bcrypt';
+import { Request, Response } from 'express';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
 import { omit } from 'utils/fns';
@@ -24,8 +25,9 @@ export class AuthService {
       if (!existingUser) throw new UnauthorizedException();
 
       const { password, ...rest } = existingUser;
+      const isMatch = await bcrypt.compare(loginDto.password, password);
 
-      if (loginDto.password !== password) throw new UnauthorizedException();
+      if (!isMatch) throw new UnauthorizedException();
 
       const sessionPayload = {
         username: rest.username,
@@ -96,5 +98,18 @@ export class AuthService {
       console.log(error);
       throw new UnauthorizedException();
     }
+  }
+
+  async logout(req: Request, res: Response) {
+    return new Promise((resolve, reject) => {
+      req.session.destroy((err) => {
+        if (err) {
+          return reject(false);
+        }
+
+        res.clearCookie('tripfare-qid');
+        return resolve(true);
+      });
+    });
   }
 }
