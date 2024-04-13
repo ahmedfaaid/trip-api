@@ -1,10 +1,20 @@
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
+import { join } from 'path';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.useStaticAssets(join(__dirname, '..', '..', 'uploads'), {
+    prefix: '/uploads'
+  });
+  app.use(cookieParser());
+  app.enableCors({
+    origin: '*',
+    credentials: true
+  });
   app.use(
     session({
       name: 'tripfare-qid',
@@ -18,11 +28,6 @@ async function bootstrap() {
       }
     })
   );
-  app.use(cookieParser());
-  app.enableCors({
-    origin: '*',
-    credentials: true
-  });
   await app.listen(5100);
 }
 bootstrap();
