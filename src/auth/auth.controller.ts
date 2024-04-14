@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   Req,
   Res,
@@ -46,7 +47,7 @@ export class AuthController {
     return await this.authService.register(data, req, profile_picture);
   }
 
-  @Post('me')
+  @Get('me')
   async me(@Req() req: Request) {
     return await this.authService.me(req);
   }
