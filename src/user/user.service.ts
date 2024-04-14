@@ -37,8 +37,24 @@ export class UserService {
     return await this.userRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    try {
+      const existingUser = await this.userRepository.findOne({
+        where: {
+          id
+        },
+        relations: {
+          profile_picture: true,
+          address: true
+        }
+      });
+
+      if (!existingUser) throw new NotFoundException();
+
+      return existingUser;
+    } catch (error) {
+      throw new NotFoundException();
+    }
   }
 
   async findByEmail(email: string): Promise<any> {
