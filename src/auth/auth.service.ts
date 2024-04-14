@@ -86,7 +86,6 @@ export class AuthService {
       }
 
       let user = await this.userService.findOne(id);
-      console.log({ user });
 
       if (!user) {
         throw new UnauthorizedException();
