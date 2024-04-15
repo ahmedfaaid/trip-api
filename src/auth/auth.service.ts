@@ -35,6 +35,7 @@ export class AuthService {
       };
 
       req.session.username = rest.username;
+      req.session.userId = rest.id;
       req.session.token = await this.jwtService.signAsync(sessionPayload);
 
       return rest;
@@ -62,6 +63,7 @@ export class AuthService {
       };
 
       req.session.username = newUser.username;
+      req.session.userId = newUser.id;
       req.session.token = await this.jwtService.signAsync(sessionPayload);
 
       return newUser;
