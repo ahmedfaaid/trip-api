@@ -8,6 +8,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ImageModule } from './image/image.module';
+import { PostModule } from './post/post.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -15,7 +16,7 @@ import { UserModule } from './user/user.module';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      synchronize: process.env.NODE_ENV === 'development',
+      synchronize: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       logging: true
     }),
@@ -24,7 +25,8 @@ import { UserModule } from './user/user.module';
     AddressModule,
     UserModule,
     ImageModule,
-    AuthModule
+    AuthModule,
+    PostModule
   ],
   controllers: [AppController],
   providers: [AppService]

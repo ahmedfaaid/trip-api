@@ -1,9 +1,11 @@
 import { Address } from 'src/address/entities/address.entity';
 import { Image } from 'src/image/entities/image.entity';
+import { Post } from 'src/post/entities/post.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
 } from 'typeorm';
@@ -50,5 +52,6 @@ export class User {
   @Column()
   gender: string;
 
-  // Add relationship column for posts
+  @OneToMany(() => Post, (post) => post.posted_by, { nullable: true })
+  posts: Post[];
 }
