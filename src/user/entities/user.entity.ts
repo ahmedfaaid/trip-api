@@ -3,12 +3,14 @@ import { Image } from 'src/image/entities/image.entity';
 import { Post } from 'src/post/entities/post.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToMany,
   OneToOne,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
 export enum Gender {
@@ -62,4 +64,10 @@ export class User {
   @ManyToOne(() => User, (user) => user.following, { nullable: true })
   @JoinColumn({ name: 'followers_id' })
   followers: User[];
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

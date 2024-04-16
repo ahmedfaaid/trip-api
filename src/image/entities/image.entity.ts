@@ -1,10 +1,12 @@
 import { Post } from 'src/post/entities/post.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
-  PrimaryGeneratedColumn
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
 } from 'typeorm';
 
 @Entity()
@@ -26,4 +28,10 @@ export class Image {
   })
   @JoinColumn({ name: 'post_id' })
   post?: Post;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }
