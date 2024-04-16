@@ -5,6 +5,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn
@@ -54,4 +55,11 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.posted_by, { nullable: true })
   posts: Post[];
+
+  @OneToMany(() => User, (user) => user.followers, { nullable: true })
+  following: User[];
+
+  @ManyToOne(() => User, (user) => user.following, { nullable: true })
+  @JoinColumn({ name: 'followers_id' })
+  followers: User[];
 }
