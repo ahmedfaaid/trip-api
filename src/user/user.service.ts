@@ -45,7 +45,10 @@ export class UserService {
         },
         relations: {
           profile_picture: true,
-          address: true
+          address: true,
+          posts: {
+            images: true
+          }
         }
       });
 
