@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { AddressService } from 'src/address/address.service';
@@ -18,19 +22,27 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto, image?: Express.Multer.File) {
-    const { address, password, ...rest } = { ...createUserDto };
-    const newImage = await this.imageService.create(image);
-    const newAddress = await this.addressService.create(address);
-    const salt = await bcrypt.genSalt(+process.env.SALT_ROUNDS);
-    const hashedPwd = await bcrypt.hash(password, salt);
-    const newUser = this.userRepository.save({
-      ...rest,
-      password: hashedPwd,
-      profile_picture: newImage,
-      address: newAddress
-    });
+    try {
+      const { address, password, ...rest } = { ...createUserDto };
+      let newImage;
 
-    return newUser;
+      if (image) {
+        newImage = await this.imageService.create(image);
+      }
+      const newAddress = await this.addressService.create(address);
+      const salt = await bcrypt.genSalt(+process.env.SALT_ROUNDS);
+      const hashedPwd = await bcrypt.hash(password, salt);
+      const newUser = this.userRepository.save({
+        ...rest,
+        password: hashedPwd,
+        profile_picture: newImage,
+        address: newAddress
+      });
+
+      return newUser;
+    } catch (error) {
+      throw new BadRequestException();
+    }
   }
 
   async findAll(): Promise<User[]> {
