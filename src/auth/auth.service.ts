@@ -109,10 +109,7 @@ export class AuthService {
         return false;
       }
 
-      res.clearCookie('tripfare-qid', {
-        domain: 'http://localhost:3000',
-        path: '/'
-      });
+      res.clearCookie('tripfare-qid');
       return true;
     });
   }
