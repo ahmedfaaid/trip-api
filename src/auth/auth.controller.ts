@@ -52,8 +52,8 @@ export class AuthController {
     return await this.authService.me(req);
   }
 
-  @Post('logout')
-  async logout(@Req() req: Request, @Res() res: Response) {
-    return await this.authService.logout(req, res);
+  @Get('logout')
+  logout(@Req() req: Request, @Res() res: Response) {
+    return this.authService.logout(req, res);
   }
 }

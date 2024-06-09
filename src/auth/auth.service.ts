@@ -102,16 +102,18 @@ export class AuthService {
     }
   }
 
-  async logout(req: Request, res: Response) {
-    return new Promise((resolve, reject) => {
-      req.session.destroy((err) => {
-        if (err) {
-          return reject(false);
-        }
+  logout(req: Request, res: Response) {
+    return req.session.destroy((err) => {
+      if (err) {
+        console.error({ err });
+        return false;
+      }
 
-        res.clearCookie('tripfare-qid');
-        return resolve(true);
+      res.clearCookie('tripfare-qid', {
+        domain: 'http://localhost:3000',
+        path: '/'
       });
+      return true;
     });
   }
 }
