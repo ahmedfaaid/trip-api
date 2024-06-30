@@ -37,7 +37,7 @@ export class PostService {
 
       const newPost = await this.postRepository.save({
         ...createPostDto,
-        images: newImages,
+        media: newImages,
         posted_by: user
       });
 

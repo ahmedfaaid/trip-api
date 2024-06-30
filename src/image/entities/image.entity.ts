@@ -23,7 +23,7 @@ export class Image {
   @Column()
   path: string;
 
-  @ManyToOne(() => Post, (post) => post.images, {
+  @ManyToOne(() => Post, (post) => post.media, {
     nullable: true
   })
   @JoinColumn({ name: 'post_id' })

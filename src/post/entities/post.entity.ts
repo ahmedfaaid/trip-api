@@ -36,7 +36,7 @@ export class Post {
   posted_by: User;
 
   @OneToMany(() => Image, (image) => image.post)
-  images: Image[];
+  media: Image[];
 
   @Column('simple-json')
   length_of_stay: {

@@ -20,7 +20,7 @@ export class PostController {
 
   @Post()
   @UseInterceptors(
-    FilesInterceptor('images', 10, {
+    FilesInterceptor('media', 10, {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, callback) => {
