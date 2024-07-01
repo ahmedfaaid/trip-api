@@ -33,10 +33,10 @@ export class PostController {
     })
   )
   create(
-    @Body() createPostDto: CreatePostDto,
+    @Body() data: CreatePostDto,
     @Req() req: Request,
-    @UploadedFiles() images: CreateImageDto[]
+    @UploadedFiles() media: CreateImageDto[]
   ) {
-    return this.postService.create(createPostDto, req, images);
+    return this.postService.create(data, req, media);
   }
 }

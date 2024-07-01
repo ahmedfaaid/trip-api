@@ -18,11 +18,7 @@ export class PostService {
     private userService: UserService
   ) {}
 
-  async create(
-    createPostDto: CreatePostDto,
-    req: Request,
-    images: CreateImageDto[]
-  ) {
+  async create(data: CreatePostDto, req: Request, media: CreateImageDto[]) {
     try {
       const {
         session: { userId }
@@ -33,10 +29,10 @@ export class PostService {
         throw new BadRequestException();
       }
 
-      const newImages = await this.imageRepository.save(images);
+      const newImages = await this.imageRepository.save(media);
 
       const newPost = await this.postRepository.save({
-        ...createPostDto,
+        ...data,
         media: newImages,
         posted_by: user
       });
