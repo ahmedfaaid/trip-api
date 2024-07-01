@@ -59,7 +59,7 @@ export class UserService {
           profile_picture: true,
           address: true,
           posts: {
-            images: true
+            media: true
           }
         }
       });
