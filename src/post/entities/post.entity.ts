@@ -60,6 +60,9 @@ export class Post {
     transportation: number;
   }; // json string total budget of accommodation, food & drinks, activities and transportation
 
+  @Column({ unique: true })
+  slug: string;
+
   @CreateDateColumn()
   created_at: Date;
 

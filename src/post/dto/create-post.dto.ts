@@ -18,4 +18,5 @@ export class CreatePostDto {
     activities: number;
     transportation: number;
   };
+  slug: string;
 }
