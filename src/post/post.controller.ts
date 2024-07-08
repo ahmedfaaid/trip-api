@@ -10,8 +10,6 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { CreateImageDto } from 'src/image/dto/create-image.dto';
-import { CreatePostDto } from './dto/create-post.dto';
 import { PostService } from './post.service';
 
 @Controller('post')
@@ -33,10 +31,10 @@ export class PostController {
     })
   )
   create(
-    @Body() data: CreatePostDto,
+    @Body() body: any,
     @Req() req: Request,
-    @UploadedFiles() media: CreateImageDto[]
+    @UploadedFiles() media: Express.Multer.File[]
   ) {
-    return this.postService.create(data, req, media);
+    return this.postService.create(JSON.parse(body.data), req, media);
   }
 }

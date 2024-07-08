@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
-import { CreateImageDto } from 'src/image/dto/create-image.dto';
 import { Image } from 'src/image/entities/image.entity';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
@@ -18,7 +17,11 @@ export class PostService {
     private userService: UserService
   ) {}
 
-  async create(data: CreatePostDto, req: Request, media: CreateImageDto[]) {
+  async create(
+    data: CreatePostDto,
+    req: Request,
+    media: Express.Multer.File[]
+  ) {
     try {
       const {
         session: { userId }
