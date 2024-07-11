@@ -40,9 +40,8 @@ export class Post {
 
   @Column('simple-json')
   length_of_stay: {
-    months: number;
-    weeks: number;
-    days: number;
+    num: number;
+    period: string;
   }; // json string of months, weeks and days
 
   @Column()
@@ -51,9 +50,12 @@ export class Post {
   @Column()
   size_of_group: number;
 
+  @Column()
+  total_budget: number;
+
   @Column('simple-json')
-  total_budget: {
-    currency: string;
+  budget: {
+    currency?: string;
     accommodation: number;
     food_drinks: number;
     activities: number;
