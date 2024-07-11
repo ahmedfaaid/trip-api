@@ -35,6 +35,7 @@ export class PostController {
     @Req() req: Request,
     @UploadedFiles() media: Express.Multer.File[]
   ) {
-    return this.postService.create(JSON.parse(body.data), req, media);
+    const data = JSON.parse(body.data);
+    return this.postService.create(data, req, media);
   }
 }
