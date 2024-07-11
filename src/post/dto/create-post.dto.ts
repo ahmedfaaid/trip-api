@@ -5,14 +5,14 @@ export class CreatePostDto {
   city: string;
   details: string;
   length_of_stay: {
-    months: number;
-    weeks: number;
-    days: number;
+    num: number;
+    period: string;
   };
   date_travelled: Date;
   size_of_group: number;
-  total_budget: {
-    currency: string;
+  total_budget: number;
+  budget: {
+    currency?: string;
     accommodation: number;
     food_drinks: number;
     activities: number;
