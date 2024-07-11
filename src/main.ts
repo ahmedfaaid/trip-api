@@ -35,6 +35,8 @@ async function bootstrap() {
       }
     })
   );
+  app.useBodyParser('json', { limit: '10mb' });
+  app.useBodyParser('urlencoded', { limit: '10mb', extended: true });
   await app.listen(5100);
 }
 bootstrap();
