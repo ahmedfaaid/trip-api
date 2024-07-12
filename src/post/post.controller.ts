@@ -30,12 +30,12 @@ export class PostController {
       })
     })
   )
-  create(
+  async create(
     @Body() body: any,
     @Req() req: Request,
     @UploadedFiles() media: Express.Multer.File[]
   ) {
     const data = JSON.parse(body.data);
-    return this.postService.create(data, req, media);
+    return await this.postService.create(data, req, media);
   }
 }
