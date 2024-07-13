@@ -6,7 +6,8 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  ManyToOne,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -58,11 +59,21 @@ export class User {
   @OneToMany(() => Post, (post) => post.posted_by, { nullable: true })
   posts: Post[];
 
-  @OneToMany(() => User, (user) => user.followers, { nullable: true })
+  @ManyToMany(() => User, (user) => user.followers, { nullable: true })
+  @JoinTable({
+    name: 'follower',
+    joinColumn: {
+      name: 'user_id',
+      referencedColumnName: 'id'
+    },
+    inverseJoinColumn: {
+      name: 'follower_id',
+      referencedColumnName: 'id'
+    }
+  })
   following: User[];
 
-  @ManyToOne(() => User, (user) => user.following, { nullable: true })
-  @JoinColumn({ name: 'followers_id' })
+  @ManyToMany(() => User, (user) => user.following, { nullable: true })
   followers: User[];
 
   @CreateDateColumn()
