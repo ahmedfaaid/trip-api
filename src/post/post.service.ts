@@ -46,4 +46,25 @@ export class PostService {
       throw new BadRequestException();
     }
   }
+
+  async getPostBySlug(slug: string) {
+    try {
+      const post = await this.postRepository.findOne({
+        where: {
+          slug
+        },
+        relations: {
+          posted_by: {
+            profile_picture: true
+          },
+          media: true
+        }
+      });
+
+      return post;
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException();
+    }
+  }
 }

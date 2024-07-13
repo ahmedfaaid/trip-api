@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  Get,
+  Param,
   Post,
   Req,
   UploadedFiles,
@@ -37,5 +39,10 @@ export class PostController {
   ) {
     const data = JSON.parse(body.data);
     return await this.postService.create(data, req, media);
+  }
+
+  @Get(':slug')
+  async getPostBySlug(@Param() params: { slug: string }) {
+    return await this.postService.getPostBySlug(params.slug);
   }
 }
