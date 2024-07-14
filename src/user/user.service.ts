@@ -12,7 +12,6 @@ import { ImageService } from 'src/image/image.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-// import { Follower } from './entities/follower.entity';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -22,7 +21,6 @@ export class UserService {
     private userRepository: Repository<User>,
     private imageService: ImageService,
     private addressService: AddressService
-    // private followerRepository: Repository<Follower>
   ) {}
 
   async create(createUserDto: CreateUserDto, image?: Express.Multer.File) {
@@ -140,14 +138,12 @@ export class UserService {
         }
       });
 
-      console.log({ user, id, userToBeFollowed, session: req.session });
-
       if (!req.session || !user) {
         throw new UnauthorizedException();
       }
 
-      await userToBeFollowed.followers.push(user);
-      await user.following.push(userToBeFollowed);
+      userToBeFollowed.followers.push(user);
+      user.following.push(userToBeFollowed);
 
       await this.userRepository.save(user);
       await this.userRepository.save(userToBeFollowed);
@@ -197,20 +193,15 @@ export class UserService {
         throw new UnauthorizedException();
       }
 
-      userToBeUnfollowed.followers = await userToBeUnfollowed.followers.filter(
+      userToBeUnfollowed.followers = userToBeUnfollowed.followers.filter(
         (follower) => follower.id !== userId
       );
-      user.following = await user.following.filter(
+      user.following = user.following.filter(
         (following) => following.id !== id
       );
 
       await this.userRepository.save(userToBeUnfollowed);
       await this.userRepository.save(user);
-
-      // await this.followerRepository.delete({
-      //   user_id: userId,
-      //   follower_id: userToBeUnfollowed.id
-      // });
 
       return true;
     } catch (error) {
