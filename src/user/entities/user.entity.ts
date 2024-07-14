@@ -59,7 +59,10 @@ export class User {
   @OneToMany(() => Post, (post) => post.posted_by, { nullable: true })
   posts: Post[];
 
-  @ManyToMany(() => User, (user) => user.followers, { nullable: true })
+  @ManyToMany(() => User, (user) => user.followers, {
+    nullable: true,
+    cascade: true
+  })
   @JoinTable({
     name: 'follower',
     joinColumn: {
@@ -73,7 +76,9 @@ export class User {
   })
   following: User[];
 
-  @ManyToMany(() => User, (user) => user.following, { nullable: true })
+  @ManyToMany(() => User, (user) => user.following, {
+    nullable: true
+  })
   followers: User[];
 
   @CreateDateColumn()
