@@ -61,7 +61,7 @@ export class UserController {
     return this.userService.remove(+id);
   }
 
-  @Post(':id')
+  @Post('follow/:id')
   async follow(@Param('id') id: string, @Req() req: Request) {
     return await this.userService.follow(+id, req);
   }
