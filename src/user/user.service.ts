@@ -12,6 +12,7 @@ import { ImageService } from 'src/image/image.service';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+// import { Follower } from './entities/follower.entity';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -21,6 +22,7 @@ export class UserService {
     private userRepository: Repository<User>,
     private imageService: ImageService,
     private addressService: AddressService
+    // private followerRepository: Repository<Follower>
   ) {}
 
   async create(createUserDto: CreateUserDto, image?: Express.Multer.File) {
@@ -149,6 +151,66 @@ export class UserService {
 
       await this.userRepository.save(user);
       await this.userRepository.save(userToBeFollowed);
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException();
+    }
+  }
+
+  async unfollow(id: number, req: Request) {
+    try {
+      const {
+        session: { userId }
+      } = req;
+      const user = await this.userRepository.findOne({
+        where: {
+          id: userId
+        },
+        relations: {
+          profile_picture: true,
+          address: true,
+          posts: {
+            media: true
+          },
+          followers: true,
+          following: true
+        }
+      });
+      const userToBeUnfollowed = await this.userRepository.findOne({
+        where: {
+          id
+        },
+        relations: {
+          profile_picture: true,
+          address: true,
+          posts: {
+            media: true
+          },
+          followers: true,
+          following: true
+        }
+      });
+
+      if (!req.session || !user) {
+        throw new UnauthorizedException();
+      }
+
+      userToBeUnfollowed.followers = await userToBeUnfollowed.followers.filter(
+        (follower) => follower.id !== userId
+      );
+      user.following = await user.following.filter(
+        (following) => following.id !== id
+      );
+
+      await this.userRepository.save(userToBeUnfollowed);
+      await this.userRepository.save(user);
+
+      // await this.followerRepository.delete({
+      //   user_id: userId,
+      //   follower_id: userToBeUnfollowed.id
+      // });
 
       return true;
     } catch (error) {

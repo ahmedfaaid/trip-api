@@ -65,4 +65,9 @@ export class UserController {
   async follow(@Param('id') id: string, @Req() req: Request) {
     return await this.userService.follow(+id, req);
   }
+
+  @Post('unfollow/:id')
+  async unfollow(@Param('id') id: string, @Req() req: Request) {
+    return await this.userService.unfollow(+id, req);
+  }
 }
