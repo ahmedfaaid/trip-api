@@ -1,8 +1,11 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity()
+@Entity({ synchronize: false })
 export class Follower {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'int', insert: false, select: false, update: false })
+  id: never;
+
+  @Column()
   user_id: number;
 
   @Column()
