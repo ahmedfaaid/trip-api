@@ -1,12 +1,10 @@
 import {
   BadRequestException,
   Injectable,
-  NotFoundException,
-  UnauthorizedException
+  NotFoundException
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
-import { Request } from 'express';
 import { AddressService } from 'src/address/address.service';
 import { ImageService } from 'src/image/image.service';
 import { Repository } from 'typeorm';
@@ -102,111 +100,5 @@ export class UserService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
-  }
-
-  async follow(id: number, req: Request) {
-    try {
-      const {
-        session: { userId }
-      } = req;
-      const user = await this.userRepository.findOne({
-        where: {
-          id: userId
-        },
-        relations: {
-          profile_picture: true,
-          address: true,
-          posts: {
-            media: true
-          },
-          followers: true,
-          following: true
-        }
-      });
-      const userToBeFollowed = await this.userRepository.findOne({
-        where: {
-          id
-        },
-        relations: {
-          profile_picture: true,
-          address: true,
-          posts: {
-            media: true
-          },
-          followers: true,
-          following: true
-        }
-      });
-
-      if (!req.session || !user) {
-        throw new UnauthorizedException();
-      }
-
-      userToBeFollowed.followers.push(user);
-      user.following.push(userToBeFollowed);
-
-      await this.userRepository.save(user);
-      await this.userRepository.save(userToBeFollowed);
-
-      return true;
-    } catch (error) {
-      console.error(error);
-      throw new BadRequestException();
-    }
-  }
-
-  async unfollow(id: number, req: Request) {
-    try {
-      const {
-        session: { userId }
-      } = req;
-      const user = await this.userRepository.findOne({
-        where: {
-          id: userId
-        },
-        relations: {
-          profile_picture: true,
-          address: true,
-          posts: {
-            media: true
-          },
-          followers: true,
-          following: true
-        }
-      });
-      const userToBeUnfollowed = await this.userRepository.findOne({
-        where: {
-          id
-        },
-        relations: {
-          profile_picture: true,
-          address: true,
-          posts: {
-            media: true
-          },
-          followers: true,
-          following: true
-        }
-      });
-
-      if (!req.session || !user) {
-        throw new UnauthorizedException();
-      }
-
-      userToBeUnfollowed.followers = userToBeUnfollowed.followers.filter(
-        (follower) => follower.id !== userId
-      );
-      user.following = user.following.filter(
-        (following) => following.id !== id
-      );
-
-      await this.userRepository.save(userToBeUnfollowed);
-      await this.userRepository.save(user);
-
-      return true;
-    } catch (error) {
-      console.error(error);
-      throw new BadRequestException();
-    }
   }
 }

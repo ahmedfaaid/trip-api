@@ -1,4 +1,5 @@
 import { Address } from 'src/address/entities/address.entity';
+import { Follow } from 'src/follow/entities/follow.entity';
 import { Image } from 'src/image/entities/image.entity';
 import { Post } from 'src/post/entities/post.entity';
 import {
@@ -6,8 +7,6 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -59,25 +58,15 @@ export class User {
   @OneToMany(() => Post, (post) => post.posted_by, { nullable: true })
   posts: Post[];
 
-  @ManyToMany(() => User, (user) => user.followers, {
+  @OneToMany(() => Follow, (follow) => follow.following, {
     nullable: true,
     cascade: true
   })
-  @JoinTable({
-    name: 'follower',
-    joinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id'
-    },
-    inverseJoinColumn: {
-      name: 'follower_id',
-      referencedColumnName: 'id'
-    }
-  })
-  following: User[];
+  following: Follow[];
 
-  @ManyToMany(() => User, (user) => user.following, {
-    nullable: true
+  @OneToMany(() => Follow, (follow) => follow.follower, {
+    nullable: true,
+    cascade: true
   })
   followers: User[];
 

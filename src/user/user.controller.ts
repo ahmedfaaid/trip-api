@@ -6,12 +6,10 @@ import {
   Param,
   Patch,
   Post,
-  Req,
   UploadedFile,
   UseInterceptors
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Request } from 'express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -59,15 +57,5 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
-  }
-
-  @Post('follow/:id')
-  async follow(@Param('id') id: string, @Req() req: Request) {
-    return await this.userService.follow(+id, req);
-  }
-
-  @Post('unfollow/:id')
-  async unfollow(@Param('id') id: string, @Req() req: Request) {
-    return await this.userService.unfollow(+id, req);
   }
 }
