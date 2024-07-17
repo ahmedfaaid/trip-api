@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { ImageModule } from './image/image.module';
 import { PostModule } from './post/post.module';
 import { UserModule } from './user/user.module';
+import { FollowModule } from './follow/follow.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { UserModule } from './user/user.module';
     UserModule,
     ImageModule,
     AuthModule,
-    PostModule
+    PostModule,
+    FollowModule
   ],
   controllers: [AppController],
   providers: [AppService]
