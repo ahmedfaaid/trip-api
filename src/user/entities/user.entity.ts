@@ -55,6 +55,9 @@ export class User {
   @Column()
   gender: string;
 
+  @Column({ nullable: true })
+  bio: string;
+
   @OneToMany(() => Post, (post) => post.posted_by, { nullable: true })
   posts: Post[];
 
