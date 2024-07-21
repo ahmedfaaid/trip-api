@@ -73,6 +73,15 @@ export class User {
   })
   followers: User[];
 
+  @Column({ nullable: true })
+  instagram: string;
+
+  @Column({ nullable: true })
+  facebook: string;
+
+  @Column({ nullable: true })
+  website: string;
+
   @CreateDateColumn()
   created_at: Date;
 
