@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
 import { Image } from 'src/image/entities/image.entity';
@@ -65,6 +69,38 @@ export class PostService {
     } catch (error) {
       console.error(error);
       throw new BadRequestException();
+    }
+  }
+
+  async getUserPosts(username: string, type: string) {
+    console.log({ username, type });
+    try {
+      let posts: Post[] | null;
+
+      if (type === 'p') {
+        posts = await this.postRepository.find({
+          where: {
+            posted_by: {
+              username
+            }
+          }
+        });
+      } else if (type === 's') {
+        posts = await this.postRepository.find({
+          where: {
+            saved_by: {
+              username
+            }
+          }
+        });
+      }
+
+      console.log({ posts });
+
+      return posts;
+    } catch (error) {
+      console.error(error);
+      throw new NotFoundException();
     }
   }
 }

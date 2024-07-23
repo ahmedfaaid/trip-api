@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   Req,
   UploadedFiles,
   UseInterceptors
@@ -41,8 +42,16 @@ export class PostController {
     return await this.postService.create(data, req, media);
   }
 
-  @Get(':slug')
+  @Get('/:slug')
   async getPostBySlug(@Param() params: { slug: string }) {
     return await this.postService.getPostBySlug(params.slug);
+  }
+
+  @Get()
+  async getUserPosts(
+    @Query('username') username: string,
+    @Query('type') type: string
+  ) {
+    return await this.postService.getUserPosts(username, type);
   }
 }
