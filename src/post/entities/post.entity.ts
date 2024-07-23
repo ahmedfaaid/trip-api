@@ -35,6 +35,10 @@ export class Post {
   @JoinColumn({ name: 'posted_by_id' })
   posted_by: User;
 
+  @ManyToOne(() => User, (user) => user.saved_posts)
+  @JoinColumn({ name: 'saved_by_id' })
+  saved_by: User[];
+
   @OneToMany(() => Image, (image) => image.post)
   media: Image[];
 

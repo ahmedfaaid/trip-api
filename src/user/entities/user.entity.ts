@@ -61,6 +61,9 @@ export class User {
   @OneToMany(() => Post, (post) => post.posted_by, { nullable: true })
   posts: Post[];
 
+  @OneToMany(() => Post, (post) => post.saved_by, { nullable: true })
+  saved_posts: Post[];
+
   @OneToMany(() => Follow, (follow) => follow.following, {
     nullable: true,
     cascade: true
