@@ -61,8 +61,16 @@ export class UserService {
           posts: {
             media: true
           },
-          followers: true,
-          following: true
+          followers: {
+            user: {
+              profile_picture: true
+            }
+          },
+          following: {
+            followed_user: {
+              profile_picture: true
+            }
+          }
         }
       });
 
@@ -70,6 +78,7 @@ export class UserService {
 
       return existingUser;
     } catch (error) {
+      console.error(error);
       throw new NotFoundException();
     }
   }

@@ -64,17 +64,17 @@ export class User {
   @OneToMany(() => Post, (post) => post.saved_by, { nullable: true })
   saved_posts: Post[];
 
-  @OneToMany(() => Follow, (follow) => follow.following, {
+  @OneToMany(() => Follow, (follow) => follow.user, {
     nullable: true,
     cascade: true
   })
   following: Follow[];
 
-  @OneToMany(() => Follow, (follow) => follow.follower, {
+  @OneToMany(() => Follow, (follow) => follow.followed_user, {
     nullable: true,
     cascade: true
   })
-  followers: User[];
+  followers: Follow[];
 
   @Column({ nullable: true })
   instagram: string;
