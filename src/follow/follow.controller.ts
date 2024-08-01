@@ -6,19 +6,13 @@ import { FollowService } from './follow.service';
 export class FollowController {
   constructor(private readonly followService: FollowService) {}
 
-  @Post(':following_id')
-  async follow(
-    @Param('following_id') following_id: number,
-    @Req() req: Request
-  ) {
-    return this.followService.follow(following_id, req);
+  @Post(':username')
+  async follow(@Param('username') username: string, @Req() req: Request) {
+    return this.followService.follow(username, req);
   }
 
-  @Delete(':following_id')
-  async unfollow(
-    @Param('following_id') following_id: number,
-    @Req() req: Request
-  ) {
-    return this.followService.unfollow(following_id, req);
+  @Delete(':username')
+  async unfollow(@Param('username') username: string, @Req() req: Request) {
+    return this.followService.unfollow(username, req);
   }
 }

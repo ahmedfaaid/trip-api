@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Request } from 'express';
-import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { Follow } from './entities/follow.entity';
 
@@ -9,17 +9,21 @@ import { Follow } from './entities/follow.entity';
 export class FollowService {
   constructor(
     @InjectRepository(Follow) private followRepository: Repository<Follow>,
-    private userService: UserService
+    @InjectRepository(User) private userRepository: Repository<User>
   ) {}
 
-  async follow(followed_user_id: number, req: Request) {
+  async follow(followed_username: string, req: Request) {
     try {
       const {
         session: { userId }
       } = req;
 
-      const user = await this.userService.findOne(userId);
-      const followed_user = await this.userService.findOne(followed_user_id);
+      const user = await this.userRepository.findOne({ where: { id: userId } });
+      const followed_user = await this.userRepository.findOne({
+        where: {
+          username: followed_username
+        }
+      });
 
       if (!user || !followed_user) {
         throw new BadRequestException();
@@ -47,14 +51,22 @@ export class FollowService {
     }
   }
 
-  async unfollow(following_id: number, req: Request) {
+  async unfollow(following_username: string, req: Request) {
     try {
       const {
         session: { userId }
       } = req;
 
-      const user = await this.userService.findOne(userId);
-      const followed_user = await this.userService.findOne(following_id);
+      const user = await this.userRepository.findOne({
+        where: {
+          id: userId
+        }
+      });
+      const followed_user = await this.userRepository.findOne({
+        where: {
+          username: following_username
+        }
+      });
 
       if (!user || !followed_user) {
         throw new BadRequestException();
